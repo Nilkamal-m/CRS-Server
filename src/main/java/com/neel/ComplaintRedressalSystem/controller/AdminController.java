@@ -1,6 +1,6 @@
 package com.neel.ComplaintRedressalSystem.controller;
 
-import java.security.Principal;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class AdminController {
 		user.setRole("ROLE_"+request.getRole());
 
 		Optional<User> u = userRepository.findByUsername(request.getUsername());
-		if (u.isEmpty()) {
+		if (u!=null) {
 			userRepository.save(user);
 			userResponse.setUsername(user.getUsername());
 			userResponse.setRole(Arrays.stream(user.getRole().split(",")).collect(Collectors.toList()));
@@ -72,7 +72,7 @@ public class AdminController {
 
 		Optional<User> u = userRepository.findByUsername(request.getUsername());
 
-		if (u.isEmpty()) {
+		if (u!=null) {
 			user.setUsername(request.getUsername());
 			user.setRole(request.getRole());
 			userRepository.save(user);
@@ -107,7 +107,7 @@ public class AdminController {
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<Object> removeUser(@PathVariable int id) {
 		Optional<User> u = userRepository.findById(id);
-		if (u.isEmpty()) {
+		if (u!=null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} else {
 			userRepository.deleteById(id);

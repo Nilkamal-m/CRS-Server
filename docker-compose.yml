@@ -1,0 +1,60 @@
+#version: "3"
+#services: 
+#  springboot-crs-app:
+#    container_name: springboot-crs-app
+#    image: nilkamalm/springbooot-app
+#    restart: always
+#    build: .
+#    ports:
+#      - 8000:8080 
+#    environment:
+#      MYSQL_HOST: mysqldb
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#      MYSQL_PORT: 3306
+#  mysqldb: 
+#    container_name: mysqldb
+#    image: mysql
+##    volumes:
+##      -  /home/user/Desktop/db:/var/lib/mysql
+#    ports: 
+#     - 3307:3306   
+#    environment:
+#      MYSQL_DATABASE: test
+#      MYSQL_ROOT_PASSWORD: root
+      
+      
+      
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql:latest
+    container_name: mysqldb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+  springboot-crs-app:
+    image: nilkamalm/springbooot-app
+    container_name: springboot-crs-app
+    ports:
+      - 8000:8080
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mysqldb
+      
+      
+      
+     ## docker run --platform linux/amd64 --name springboot-crs-app -p 8000:8080 -e MYSQL_HOST=mysqldb -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e MYSQL_PORT=3306 nilkamalm/springbooot-app
+      
+      
+      
+      
+      
